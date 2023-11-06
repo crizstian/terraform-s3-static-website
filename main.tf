@@ -14,6 +14,14 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
+locals {
+  content_types = {
+    ".html" : "text/html",
+    ".css" : "text/css",
+    ".js" : "text/javascript"
+  }
+}
+
 # S3 static website bucket
 
 resource "aws_s3_bucket" "my-static-website" {
@@ -70,7 +78,14 @@ resource "aws_s3_bucket_acl" "my-static-website" {
   acl    = "public-read"
 }
 
-
+resource "aws_s3_object" "file" {
+  for_each     = fileset(path.module, "content/**/*.{html,css,js}")
+  bucket       = aws_s3_bucket.my-static-website.id
+  key          = replace(each.value, "/^content//", "")
+  source       = each.value
+  content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
+  etag         = filemd5(each.value)
+}
 
 
 # s3 static website url
