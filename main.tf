@@ -4,6 +4,7 @@ variable "region" {}
 variable "access_key" {}
 variable "secret_key" {}
 variable "bucket_name" {}
+variable "site_name" {}
 
 # aws provider block
 
@@ -18,7 +19,7 @@ provider "aws" {
 resource "aws_s3_bucket" "my-static-website" {
   bucket = var.bucket_name
   tags = {
-    Name = "my-static-website"
+    Name = var.site_name
   }
 }
 
