@@ -1,19 +1,22 @@
 # define aws region replace it with your region
 
-variable "region" {
-  default = "ap-south-1"
-}
+variable "region" {}
+variable "access_key" {}
+variable "secret_key" {}
+variable "bucket_name" {}
 
 # aws provider block
 
 provider "aws" {
-  region = var.region
+  region     = var.region
+  access_key = var.access_key
+  secret_key = var.secret_key
 }
 
 # S3 static website bucket
 
 resource "aws_s3_bucket" "my-static-website" {
-  bucket = "my-static-website46551" # give a unique bucket name
+  bucket = var.bucket_name
   tags = {
     Name = "my-static-website"
   }
