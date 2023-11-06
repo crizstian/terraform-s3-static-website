@@ -79,9 +79,9 @@ resource "aws_s3_bucket_acl" "my-static-website" {
 }
 
 resource "aws_s3_object" "file" {
-  for_each     = fileset(path.module, "content/**/*.{html,css,js}")
+  for_each     = fileset(path.module, "*.{html,css,js}")
   bucket       = aws_s3_bucket.my-static-website.id
-  key          = replace(each.value, "/^content//", "")
+  key          = each.value
   source       = each.value
   content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
   etag         = filemd5(each.value)
