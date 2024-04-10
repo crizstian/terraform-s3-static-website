@@ -1,8 +1,6 @@
 # define aws region replace it with your region
 
 variable "region" {}
-variable "access_key" {}
-variable "secret_key" {}
 variable "bucket_name" {}
 variable "site_name" {}
 
